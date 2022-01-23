@@ -50,10 +50,27 @@ public class ReceitaFormDto {
 		return data;
 	}
 
-	public void atualizarReceita(Receita receita) {
+	public Receita atualizarReceita(Receita receita) {
 		receita.setDescricao(descricao);
 		receita.setValor(valor);
 		receita.setData(data);
+		
+		String anoMes = "" + data.getYear() + data.getMonth().getValue();
+		receita.setAnoMes(anoMes);
+		
+		return receita;
+	}
+
+	public Receita criarReceita() {
+		Receita receita = new Receita();
+		receita.setDescricao(descricao);
+		receita.setValor(valor);
+		receita.setData(data);
+		
+		String anoMes = "" + data.getYear() + data.getMonth().getValue();
+		receita.setAnoMes(anoMes);
+		
+		return receita;
 	}
 
 }

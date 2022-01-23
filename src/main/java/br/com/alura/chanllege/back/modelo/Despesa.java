@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import br.com.alura.chanllege.back.controller.dto.DespesaFormDto;
+
 @Entity
 @Table(name = "despesas")
 public class Despesa {
@@ -18,6 +20,13 @@ public class Despesa {
 	private String descricao;
 	private Double valor;
 	private LocalDate data;
+
+	public Despesa() {	
+	}
+	
+	public Despesa(DespesaFormDto formDto) {
+		
+	}
 
 	public Long getId() {
 		return id;
