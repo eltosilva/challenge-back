@@ -2,15 +2,11 @@ package br.com.alura.chanllege.back.controller;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.alura.chanllege.back.controller.dto.ReceitaDto;
 import br.com.alura.chanllege.back.controller.dto.ReceitaFormDto;
-import br.com.alura.chanllege.back.modelo.Receita;
-import br.com.alura.chanllege.back.repository.ReceitaRepository;
 import br.com.alura.chanllege.back.service.ReceitaService;
 
 @RestController

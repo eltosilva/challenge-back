@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
-import br.com.alura.chanllege.back.controller.dto.ReceitaFormDto;
-
 @Entity
 @Table(name = "receitas", indexes = {@Index(name = "descricaoMes", columnList = "descricao,ano_mes", unique = true)})
 public class Receita {
@@ -26,12 +24,6 @@ public class Receita {
 	private LocalDate data;
 
 	public Receita() {
-	}
-
-	public Receita(ReceitaFormDto receitaDto) {
-		this.descricao = receitaDto.getDescricao();
-		this.valor = receitaDto.getValor();
-		this.data = receitaDto.getData();
 	}
 
 	public Long getId() {

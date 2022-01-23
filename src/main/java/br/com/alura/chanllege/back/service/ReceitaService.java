@@ -6,10 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.JDBCException;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -42,13 +39,12 @@ public class ReceitaService {
 	public ReceitaDto salvar(ReceitaFormDto formDto) {
 
 		Receita receita = formDto.criarReceita();
-
-		try {
-			receita = receitaRepository.save(receita);
-			return new ReceitaDto(receita);
-		} catch (DataIntegrityViolationException dive) {
+		Optional<Receita> consulta = receitaRepository.findByDescricaoAndAnoMes(receita.getDescricao(),	receita.getAnoMes());
+		if (consulta.isPresent())
 			throw new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+
+		receita = receitaRepository.save(receita);
+		return new ReceitaDto(receita);
 	}
 
 	@Transactional
@@ -57,22 +53,23 @@ public class ReceitaService {
 		if (consultaAtual.isEmpty())
 			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
 
-		consultaAtual = receitaRepository.buscarDescricaoNoMesmoMes(formDto.getDescricao(), formDto.getData());
-		if(consultaAtual.isPresent())
+		Optional<Receita> consulta = receitaRepository.findByDescricaoAndAnoMes(formDto.getDescricao(),
+				formDto.criarReceita().getAnoMes());
+		if (consulta.isPresent())
 			throw new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY);
-		
-		Receita receita = formDto.atualizarReceita(consultaAtual.get());
+
+		Receita receita = formDto.alterar(consultaAtual.get());
 		return new ReceitaDto(receita);
 	}
-	
+
 	@Transactional
 	public ReceitaDto remover(Long id) {
 		Optional<Receita> receita = receitaRepository.findById(id);
-		
-		if(receita.isEmpty())
+
+		if (receita.isEmpty())
 			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
 		ReceitaDto receitaDto = new ReceitaDto(receita.get());
-		
+
 		receitaRepository.delete(receita.get());
 		return receitaDto;
 	}

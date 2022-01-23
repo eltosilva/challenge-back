@@ -2,16 +2,18 @@ package br.com.alura.chanllege.back.modelo;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
-import br.com.alura.chanllege.back.controller.dto.DespesaFormDto;
-
 @Entity
-@Table(name = "despesas")
+@Table(name = "despesas", indexes = {
+	@Index(name = "descricao_mes", columnList = "descricao,ano_mes", unique = true)
+})
 public class Despesa {
 
 	@Id
@@ -20,12 +22,18 @@ public class Despesa {
 	private String descricao;
 	private Double valor;
 	private LocalDate data;
+	@Column(name ="ano_mes")
+	private String anoMes;
 
 	public Despesa() {	
 	}
-	
-	public Despesa(DespesaFormDto formDto) {
-		
+
+	public String getAnoMes() {
+		return anoMes;
+	}
+
+	public void setAnoMes(String anoMes) {
+		this.anoMes = anoMes;
 	}
 
 	public Long getId() {
