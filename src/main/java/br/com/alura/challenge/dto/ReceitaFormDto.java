@@ -1,4 +1,4 @@
-package br.com.alura.chanllege.back.controller.dto;
+package br.com.alura.challenge.dto;
 
 import java.time.LocalDate;
 
@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import br.com.alura.chanllege.back.modelo.Receita;
+import br.com.alura.challenge.modelo.Receita;
 
 public class ReceitaFormDto {
 	

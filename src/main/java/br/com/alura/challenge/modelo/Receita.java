@@ -1,4 +1,4 @@
-package br.com.alura.chanllege.back.modelo;
+package br.com.alura.challenge.modelo;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package br.com.alura.chanllege.back.modelo;
+package br.com.alura.challenge.modelo;
 
 import java.time.LocalDate;
 
@@ -68,4 +68,8 @@ public class Despesa {
 		this.data = data;
 	}
 
+	@Override
+	public String toString() {
+		return "{\"descricao\":\"" + descricao + "\", \"valor\":" + valor + ", \"data\":\"" + data +"\"}";
+	}
 }

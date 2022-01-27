@@ -1,4 +1,4 @@
-package br.com.alura.chanllege.back.service;
+package br.com.alura.challenge.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import br.com.alura.chanllege.back.controller.dto.ReceitaDto;
-import br.com.alura.chanllege.back.controller.dto.ReceitaFormDto;
-import br.com.alura.chanllege.back.modelo.Receita;
-import br.com.alura.chanllege.back.repository.ReceitaRepository;
+import br.com.alura.challenge.dto.ReceitaDto;
+import br.com.alura.challenge.modelo.Receita;
+import br.com.alura.challenge.repository.ReceitaRepository;
 
 @Service
 public class ReceitaService {
@@ -36,7 +35,7 @@ public class ReceitaService {
 	}
 
 	@Transactional
-	public ReceitaDto salvar(ReceitaFormDto formDto) {
+	public ReceitaDto salvar(ReceitaDto formDto) {
 
 		Receita receita = formDto.criarReceita();
 		Optional<Receita> consulta = receitaRepository.findByDescricaoAndAnoMes(receita.getDescricao(),	receita.getAnoMes());
@@ -48,8 +47,8 @@ public class ReceitaService {
 	}
 
 	@Transactional
-	public ReceitaDto atualizar(ReceitaFormDto formDto) {
-		Optional<Receita> consultaAtual = receitaRepository.findById(formDto.getId());
+	public ReceitaDto atualizar(Long id, ReceitaDto formDto) {
+		Optional<Receita> consultaAtual = receitaRepository.findById(id);
 		if (consultaAtual.isEmpty())
 			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
 

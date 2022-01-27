@@ -1,4 +1,4 @@
-package br.com.alura.chanllege.back.controller.dto;
+package br.com.alura.challenge.dto;
 
 import java.time.LocalDate;
 
@@ -7,11 +7,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import br.com.alura.chanllege.back.modelo.Despesa;
+import br.com.alura.challenge.modelo.Despesa;
 
-public class DespesaFormDto {
+public class DespesaDto {
 
-	private Long id;
 	@NotNull @NotBlank @Size(min = 5)
 	private String descricao;
 	@NotNull @Negative
@@ -19,38 +18,41 @@ public class DespesaFormDto {
 	@NotNull
 	private LocalDate data;
 	
-	public Long getId() {
-		return id;
+	public DespesaDto() {
 	}
-
-	public void setId(Long id) {
-		this.id = id;
+	
+	public DespesaDto(Despesa despesa) {
+		descricao = despesa.getDescricao();
+		valor = despesa.getValor();
+		data = despesa.getData();
 	}
+	
+	
 
 	public String getDescricao() {
 		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
 	}
 
 	public Double getValor() {
 		return valor;
 	}
 
-	public void setValor(Double valor) {
-		this.valor = valor;
-	}
-
 	public LocalDate getData() {
 		return data;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 	public void setData(LocalDate data) {
 		this.data = data;
 	}
-
+	
 	public Despesa criarDespesa() {
 		Despesa despesa = new Despesa();
 		

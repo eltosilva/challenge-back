@@ -1,4 +1,4 @@
-package br.com.alura.chanllege.back;
+package br.com.alura.challenge;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
