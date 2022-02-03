@@ -21,9 +21,8 @@ public class DespesaService {
 	@Autowired
 	private DespesaRepository despesaRepository;
 
-	public List<DespesaDto> listarDespesas() {
-		return despesaRepository.findAll().stream().map(DespesaDto::new).collect(Collectors.toList());
-		
+	public List<DespesaDto> listarDespesas(String descricao) {
+		return despesaRepository.burcarPorDescricao(descricao).stream().map(DespesaDto::new).collect(Collectors.toList());
 	}
 
 	public DespesaDto buscarPorId(Long id) {
@@ -32,6 +31,10 @@ public class DespesaService {
 			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
 
 		return new DespesaDto(despesa.get());
+	}
+
+	public List<DespesaDto> buscarPorAnoMes(Integer ano, Integer mes){
+		return despesaRepository.findByAnoMes("" + ano + mes).stream().map(DespesaDto::new).collect(Collectors.toList());
 	}
 
 	@Transactional

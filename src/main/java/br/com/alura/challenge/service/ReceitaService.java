@@ -21,8 +21,8 @@ public class ReceitaService {
 	@Autowired
 	private ReceitaRepository receitaRepository;
 
-	public List<ReceitaDto> listarReceitas() {
-		return receitaRepository.findAll().stream().map(ReceitaDto::new).collect(Collectors.toList());
+	public List<ReceitaDto> listarReceitas(String descricao) {
+		return receitaRepository.buscarPorDescricao(descricao).stream().map(ReceitaDto::new).collect(Collectors.toList());
 	}
 
 	public ReceitaDto buscarPorId(Long id) {
@@ -32,6 +32,10 @@ public class ReceitaService {
 			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
 
 		return new ReceitaDto(consulta.get());
+	}
+	
+	public List<ReceitaDto> buscarPoAnoMes(int ano, int mes){
+		return receitaRepository.findByAnoMes("" + ano + mes).stream().map(ReceitaDto::new).collect(Collectors.toList());
 	}
 
 	@Transactional

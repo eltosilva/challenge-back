@@ -28,8 +28,8 @@ public class DespesaController {
 	private DespesaService despesaService;
 
 	@GetMapping
-	public List<DespesaDto> listar() {
-		return despesaService.listarDespesas();
+	public List<DespesaDto> listar(String descricao) {
+		return despesaService.listarDespesas(descricao);
 	}
 
 	@GetMapping("/{id}")
@@ -37,6 +37,11 @@ public class DespesaController {
 		DespesaDto despesa = despesaService.buscarPorId(id);
 
 		return ResponseEntity.ok(despesa);
+	}
+	
+	@GetMapping("/{ano}/{mes}")
+	public ResponseEntity<List<DespesaDto>> buscarPorAnoMes(@PathVariable("ano") Integer ano, @PathVariable("mes") Integer mes){
+		return ResponseEntity.ok(despesaService.buscarPorAnoMes(ano, mes));
 	}
 
 	@PostMapping

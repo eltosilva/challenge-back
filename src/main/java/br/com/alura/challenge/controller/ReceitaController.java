@@ -28,14 +28,19 @@ public class ReceitaController {
 	private ReceitaService receitaService;
 
 	@GetMapping
-	public List<ReceitaDto> listar() {
-		return receitaService.listarReceitas();
+	public List<ReceitaDto> listar(String descricao) {
+		return receitaService.listarReceitas(descricao);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ReceitaDto> buscarPeloId(@PathVariable Long id) {
 		ReceitaDto receita = receitaService.buscarPorId(id);
 		return ResponseEntity.ok(receita);
+	}
+	
+	@GetMapping("/{ano}/{mes}")
+	public ResponseEntity<List<ReceitaDto>> buscarPorAnoMes(@PathVariable("ano") Integer ano, @PathVariable("mes") Integer mes){
+		return ResponseEntity.ok(receitaService.buscarPoAnoMes(ano, mes));
 	}
 
 	@PostMapping

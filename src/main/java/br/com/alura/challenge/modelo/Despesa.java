@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,6 +22,8 @@ public class Despesa {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String descricao;
+	@Enumerated(EnumType.STRING)
+	private CategoriaDespesa categoria;
 	private Double valor;
 	private LocalDate data;
 	@Column(name ="ano_mes")
@@ -68,6 +72,14 @@ public class Despesa {
 		this.data = data;
 	}
 
+	public CategoriaDespesa getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(CategoriaDespesa categoria) {
+		this.categoria = categoria;
+	}
+	
 	@Override
 	public String toString() {
 		return "{\"descricao\":\"" + descricao + "\", \"valor\":" + valor + ", \"data\":\"" + data +"\"}";

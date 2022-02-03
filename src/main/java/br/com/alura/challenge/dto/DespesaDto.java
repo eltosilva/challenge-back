@@ -7,27 +7,39 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import br.com.alura.challenge.modelo.CategoriaDespesa;
 import br.com.alura.challenge.modelo.Despesa;
 
 public class DespesaDto {
 
-	@NotNull @NotBlank @Size(min = 5)
+	@NotNull
+	@NotBlank
+	@Size(min = 5)
 	private String descricao;
-	@NotNull @Negative
+	@NotNull
+	@Negative
 	private Double valor;
 	@NotNull
 	private LocalDate data;
-	
+	private CategoriaDespesa categoria;
+
 	public DespesaDto() {
 	}
-	
+
+	public CategoriaDespesa getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(CategoriaDespesa categoria) {
+		this.categoria = categoria;
+	}
+
 	public DespesaDto(Despesa despesa) {
 		descricao = despesa.getDescricao();
 		valor = despesa.getValor();
 		data = despesa.getData();
+		categoria = despesa.getCategoria();
 	}
-	
-	
 
 	public String getDescricao() {
 		return descricao;
@@ -52,10 +64,10 @@ public class DespesaDto {
 	public void setData(LocalDate data) {
 		this.data = data;
 	}
-	
+
 	public Despesa criarDespesa() {
 		Despesa despesa = new Despesa();
-		
+
 		return alterar(despesa);
 	}
 
@@ -65,6 +77,11 @@ public class DespesaDto {
 		despesa.setData(data);
 		despesa.setAnoMes("" + data.getYear() + data.getMonthValue());
 		
+		if(categoria == null)
+			despesa.setCategoria(CategoriaDespesa.OUTRAS);
+		else
+			despesa.setCategoria(categoria);
+
 		return despesa;
 	}
 
