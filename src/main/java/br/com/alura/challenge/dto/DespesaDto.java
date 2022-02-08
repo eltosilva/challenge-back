@@ -1,6 +1,7 @@
 package br.com.alura.challenge.dto;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.validation.constraints.Negative;
 import javax.validation.constraints.NotBlank;
@@ -25,6 +26,13 @@ public class DespesaDto {
 
 	public DespesaDto() {
 	}
+	
+	public DespesaDto(Despesa despesa) {
+		descricao = despesa.getDescricao();
+		valor = despesa.getValor();
+		data = despesa.getData();
+		categoria = despesa.getCategoria();
+	}
 
 	public CategoriaDespesa getCategoria() {
 		return categoria;
@@ -34,12 +42,6 @@ public class DespesaDto {
 		this.categoria = categoria;
 	}
 
-	public DespesaDto(Despesa despesa) {
-		descricao = despesa.getDescricao();
-		valor = despesa.getValor();
-		data = despesa.getData();
-		categoria = despesa.getCategoria();
-	}
 
 	public String getDescricao() {
 		return descricao;
@@ -81,8 +83,25 @@ public class DespesaDto {
 			despesa.setCategoria(CategoriaDespesa.OUTRAS);
 		else
 			despesa.setCategoria(categoria);
-
+		
 		return despesa;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(categoria, data, descricao, valor);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DespesaDto other = (DespesaDto) obj;
+		return categoria == other.categoria && Objects.equals(data, other.data)
+				&& Objects.equals(descricao, other.descricao) && Objects.equals(valor, other.valor);
+	}
 }

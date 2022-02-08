@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ChanllegeBackApplication {
+public class ChallengeBackApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChanllegeBackApplication.class, args);
+		SpringApplication.run(ChallengeBackApplication.class, args);
 	}
 
 }

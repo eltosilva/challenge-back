@@ -7,11 +7,11 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import br.com.alura.challenge.dto.DespesaDto;
+import br.com.alura.challenge.exceptions.EntidadeDuplicadaException;
+import br.com.alura.challenge.exceptions.NotFoundException;
 import br.com.alura.challenge.modelo.Despesa;
 import br.com.alura.challenge.repository.DespesaRepository;
 
@@ -28,13 +28,18 @@ public class DespesaService {
 	public DespesaDto buscarPorId(Long id) {
 		Optional<Despesa> despesa = despesaRepository.findById(id);
 		if (despesa.isEmpty())
-			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
+			throw new NotFoundException("A despesa de id " + id + " não exite.");
 
 		return new DespesaDto(despesa.get());
 	}
 
 	public List<DespesaDto> buscarPorAnoMes(Integer ano, Integer mes){
-		return despesaRepository.findByAnoMes("" + ano + mes).stream().map(DespesaDto::new).collect(Collectors.toList());
+		List<Despesa> list = despesaRepository.findByAnoMes("" + ano + mes);
+		
+		if(list.isEmpty())
+			throw new NotFoundException("Não foi encotrada despesas em " + mes + "/" + ano);
+		
+		return list.stream().map(DespesaDto::new).collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -45,7 +50,8 @@ public class DespesaService {
 				despesa.getAnoMes());
 
 		if (consulta.isPresent())
-			throw new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY);
+			throw new EntidadeDuplicadaException("Já existe um despesa " + formDto.getDescricao() + " em " +
+					formDto.getData().getMonthValue() + "/" + formDto.getData().getYear());
 
 		despesa = despesaRepository.save(despesa);
 		return new DespesaDto(despesa);
@@ -55,12 +61,13 @@ public class DespesaService {
 	public DespesaDto alterar(Long id, DespesaDto formDto) {
 		Optional<Despesa> consultaAtual = despesaRepository.findById(id);
 		if (consultaAtual.isEmpty())
-			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
+			throw new NotFoundException("A despesa de id " + id + " não existe.");
 
 		Optional<Despesa> consulta = despesaRepository.findByDescricaoAndAnoMes(formDto.getDescricao(),
 				formDto.criarDespesa().getAnoMes());
 		if (consulta.isPresent())
-			throw new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY);
+			throw new EntidadeDuplicadaException("Já existe um despesa " + formDto.getDescricao() + " em " +
+					formDto.getData().getMonthValue() + "/" + formDto.getData().getYear());
 
 		Despesa despesa = formDto.alterar(consultaAtual.get());
 		return new DespesaDto(despesa);
@@ -70,7 +77,7 @@ public class DespesaService {
 	public DespesaDto remover(Long id) {
 		Optional<Despesa> receita = despesaRepository.findById(id);
 		if (receita.isEmpty())
-			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
+			throw new NotFoundException("A despesa de id " + id + " não existe.");
 
 		despesaRepository.delete(receita.get());
 		return new DespesaDto(receita.get());
